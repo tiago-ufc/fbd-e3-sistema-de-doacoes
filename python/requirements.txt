@@ -81,3 +81,5 @@ urllib3==2.6.2
 wcwidth==0.2.14
 webencodings==0.5.1
 xyzservices==2025.11.0
+watchfiles==1.1.1
+anyio==4.12.1
