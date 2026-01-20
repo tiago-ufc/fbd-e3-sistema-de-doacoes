@@ -1,126 +1,282 @@
-CREATE TABLE public.pessoa
-(
-    idp SERIAL,
-    nome VARCHAR(50) NOT NULL,
-    cpf CHAR(12) NOT NULL,
-    sexo CHAR(1),
-    nascimento DATE,
-    salario NUMERIC(10,2),
-
-    CONSTRAINT pessoa_pkey PRIMARY KEY (cpf),
-    CONSTRAINT id_unique UNIQUE (idp),
-    CONSTRAINT sexo_valido CHECK (sexo IN ('M','F')),
-    CONSTRAINT salario_positivo CHECK (salario >= 0)
+-- Tabela principal de usuários
+CREATE TABLE usuario (
+ cpf_cnpj VARCHAR(14) PRIMARY KEY NOT NULL,
+ nome VARCHAR(100) NOT NULL,
+ email VARCHAR(100) UNIQUE,
+ senha VARCHAR(100),
+ celular CHAR(14) UNIQUE,
+ rua VARCHAR(100),
+ numero VARCHAR(10),
+ bairro VARCHAR(50),
+ cidade VARCHAR(50),
+ estado VARCHAR(50),
+ cep CHAR(8)
 );
-
--- Genero e salario
-INSERT INTO public.pessoa (nome, cpf, sexo, nascimento, salario) VALUES
-('Ana Silva',        '900000000001', 'F', '1995-03-10', 3500.00),
-('João Santos',      '900000000002', 'M', '1990-08-22', 4200.50),
-('Maria Lima',       '900000000003', 'F', '1988-12-05', 5100.75),
-('Carlos Rocha',     '900000000004', 'M', '1992-01-15', 3800.00),
-('Fernanda Alves',   '900000000005', 'F', '1997-07-19', 2900.90),
-('Pedro Costa',      '900000000006', 'M', '1985-05-03', 6200.00),
-('Juliana Pires',    '900000000007', 'F', '1999-11-30', 2700.40),
-('Lucas Martins',    '900000000008', 'M', '1993-04-12', 4100.00),
-('Patricia Gomes',   '900000000009', 'F', '1987-09-25', 5400.80),
-('Rafael Nogueira',  '900000000010', 'M', '1991-02-18', 4600.30),
-
-('Bruna Azevedo',    '900000000011', 'F', '1996-06-21', 3300.00),
-('Diego Farias',     '900000000012', 'M', '1989-10-09', 4800.20),
-('Camila Rangel',    '900000000013', 'F', '1994-04-01', 3900.00),
-('Thiago Moreira',   '900000000014', 'M', '1986-12-14', 6100.00),
-('Larissa Cunha',    '900000000015', 'F', '1998-08-27', 2600.00),
-('Eduardo Pacheco',  '900000000016', 'M', '1984-02-11', 7000.00),
-('Renata Barros',    '900000000017', 'F', '1992-05-30', 4100.50),
-('Felipe Torres',    '900000000018', 'M', '1990-09-03', 4500.00),
-('Vanessa Ribeiro',  '900000000019', 'F', '1987-07-16', 5300.90),
-('Gustavo Neves',    '900000000020', 'M', '1993-11-08', 3900.00),
-
-('Aline Batista',    '900000000021', 'F', '1996-01-19', 3200.00),
-('Marcos Teixeira',  '900000000022', 'M', '1988-03-25', 5200.00),
-('Paula Fonseca',    '900000000023', 'F', '1991-06-12', 4100.00),
-('Bruno Macedo',     '900000000024', 'M', '1985-04-02', 6000.00),
-('Tatiane Lopes',    '900000000025', 'F', '1999-09-14', 2500.00),
-('Leonardo Rios',    '900000000026', 'M', '1992-12-29', 4400.00),
-('Simone Guedes',    '900000000027', 'F', '1986-10-07', 5600.00),
-('Andre Freitas',    '900000000028', 'M', '1994-08-18', 3800.00),
-('Debora Moraes',    '900000000029', 'F', '1990-02-05', 4700.00),
-('Rodrigo Paiva',    '900000000030', 'M', '1987-05-23', 5900.00),
-
-('Natalia Queiroz',  '900000000031', 'F', '1995-07-11', 3400.00),
-('Vinicius Prado',   '900000000032', 'M', '1991-01-09', 4300.00),
-('Carolina Siqueira','900000000033', 'F', '1989-06-17', 5200.00),
-('Fabio Rezende',    '900000000034', 'M', '1984-09-28', 6800.00),
-('Bianca Tavares',   '900000000035', 'F', '1997-03-06', 3100.00),
-('Caio Lacerda',     '900000000036', 'M', '1993-10-15', 4000.00),
-('Luciana Peixoto',  '900000000037', 'F', '1988-12-01', 5500.00),
-('Renan Duarte',     '900000000038', 'M', '1996-04-22', 3600.00),
-('Monica Vianna',    '900000000039', 'F', '1985-11-09', 6100.00),
-('Igor Sampaio',     '900000000040', 'M', '1992-02-27', 4500.00),
-
-('Priscila Melo',    '900000000041', 'F', '1994-05-13', 3900.00),
-('Alexandre Pinto',  '900000000042', 'M', '1986-07-01', 5800.00),
-('Rita Carvalho',    '900000000043', 'F', '1990-08-19', 4700.00),
-('Daniel Moura',     '900000000044', 'M', '1989-03-08', 5100.00),
-('Sabrina Nunes',    '900000000045', 'F', '1998-10-30', 2800.00),
-('Henrique Sales',   '900000000046', 'M', '1991-12-16', 4400.00),
-('Elaine Portela',   '900000000047', 'F', '1987-01-26', 5600.00),
-('Mateus Braga',     '900000000048', 'M', '1995-09-04', 3700.00),
-('Cristina Amaral',  '900000000049', 'F', '1984-06-20', 6400.00),
-('Paulo Henriques',  '900000000050', 'M', '1988-11-11', 5200.00),
-
-('Kelly Rocha',      '900000000051', 'F', '1996-02-14', 3300.00),
-('Samuel Antunes',   '900000000052', 'M', '1992-04-07', 4500.00),
-('Flavia Pimentel',  '900000000053', 'F', '1989-07-29', 5100.00),
-('Adriano Bittencourt','900000000054','M','1985-10-03',6200.00),
-('Milena Correa',    '900000000055', 'F', '1997-12-21', 3000.00),
-('Rogerio Cunha',    '900000000056', 'M', '1990-06-09', 4700.00),
-('Helena Godoy',     '900000000057', 'F', '1986-03-18', 5900.00),
-('Otavio Paredes',   '900000000058', 'M', '1994-08-01', 3900.00),
-('Lucio Brandao',    '900000000059', 'M', '1987-05-06', 5600.00),
-('Beatriz Rangel',   '900000000060', 'F', '1999-09-28', 2600.00),
-
-('Vitor Leal',       '900000000061', 'M', '1993-01-20', 4100.00),
-('Raquel Silveira',  '900000000062', 'F', '1991-11-13', 4600.00),
-('Danilo Furtado',   '900000000063', 'M', '1988-04-24', 5200.00),
-('Isabela Torres',   '900000000064', 'F', '1996-07-02', 3400.00),
-('Jonas Abreu',      '900000000065', 'M', '1985-02-17', 6300.00),
-('Cintia Pacheco',   '900000000066', 'F', '1992-06-05', 4300.00),
-('Wesley Monteiro',  '900000000067', 'M', '1990-09-19', 4800.00),
-('Daniela Salles',   '900000000068', 'F', '1989-12-08', 5100.00),
-('Murilo Afonso',    '900000000069', 'M', '1994-03-26', 4000.00),
-('Sueli Andrade',    '900000000070', 'F', '1986-10-14', 5800.00),
-
-('Thiago Guimaraes', '900000000071', 'M', '1991-04-18', 4500.00),
-('Fabiana Coelho',   '900000000072', 'F', '1997-01-31', 3100.00),
-('Cristiano Lemos',  '900000000073', 'M', '1984-07-07', 6900.00),
-('Leticia Figueiredo','900000000074','F','1995-08-23',3600.00),
-('Renato Beltrao',   '900000000075', 'M', '1989-02-12', 5200.00),
-('Michele Franca',   '900000000076', 'F', '1993-06-29', 4000.00),
-('Allan Medeiros',   '900000000077', 'M', '1990-11-17', 4700.00),
-('Roberta Xavier',   '900000000078', 'F', '1987-09-03', 5500.00),
-('Bruno Esteves',    '900000000079', 'M', '1994-05-10', 4200.00),
-('Claudia Rezende',  '900000000080', 'F', '1985-12-26', 6000.00),
-
-('Igor Lima',        '900000000081', 'M', '1992-08-04', 4400.00),
-('Tatiana Lopes',    '900000000082', 'F', '1996-03-15', 3300.00),
-('Felipe Guedes',    '900000000083', 'M', '1988-06-28', 5300.00),
-('Renata Vilela',    '900000000084', 'F', '1991-10-06', 4600.00),
-('Douglas Neri',     '900000000085', 'M', '1986-01-22', 5800.00),
-('Julio Cesar Moraes','900000000086','M','1993-09-09',4100.00),
-('Patricia Abreu',   '900000000087', 'F', '1989-04-30', 5200.00),
-('Leonardo Cunha',   '900000000088', 'M', '1995-07-18', 3700.00),
-('Carla Pinheiro',   '900000000089', 'F', '1997-12-02', 3000.00),
-('Rodney Vieira',    '900000000090', 'M', '1984-11-21', 6700.00),
-
-('Elaine Matos',     '900000000091', 'F', '1990-05-08', 4800.00),
-('Victor Hugo Pires','900000000092', 'M', '1987-02-14', 5600.00),
-('Daniela Porto',    '900000000093', 'F', '1994-08-27', 3900.00),
-('Sandro Pecanha',   '900000000094', 'M', '1989-06-01', 5200.00),
-('Ariane Valente',   '900000000095', 'F', '1998-10-12', 2800.00),
-('Bruno Quevedo',    '900000000096', 'M', '1991-01-05', 4500.00),
-('Luciana Fontes',   '900000000097', 'F', '1986-03-24', 5900.00),
-('Ramon Brito',      '900000000098', 'M', '1993-04-16', 4100.00),
-('Elisa Montenegro', '900000000099', 'F', '1995-09-20', 3600.00),
-('Fabricio Dornelles','900000000100','M','1988-12-31',5400.00);
+-- Tipos específicos de usuário
+CREATE TABLE doador (
+ cpf_cnpj_d VARCHAR(14) PRIMARY KEY NOT NULL REFERENCES usuario(cpf_cnpj),
+ data_nascimento DATE
+);
+CREATE TABLE beneficiario (
+ cpf_cnpj_b VARCHAR(14) PRIMARY KEY NOT NULL REFERENCES usuario(cpf_cnpj),
+ data_nascimento DATE
+);
+CREATE TABLE instituicao (
+ cpf_cnpj_i VARCHAR(14) PRIMARY KEY NOT NULL REFERENCES usuario(cpf_cnpj)
+);
+-- Tabela de campanhas
+CREATE TABLE campanha (
+ id_campanha SERIAL PRIMARY KEY NOT NULL,
+ nome VARCHAR(100) NOT NULL,
+ data_inicio DATE,
+ data_fim DATE,
+ status VARCHAR(30),
+ cpf_cnpj_i VARCHAR(14) NOT NULL REFERENCES instituicao(cpf_cnpj_i)
+);
+-- Doações realizadas
+CREATE TABLE doacao (
+ id_doacao SERIAL PRIMARY KEY NOT NULL,
+ data_doacao TIMESTAMP,
+ cpf_cnpj_d VARCHAR(14) REFERENCES doador(cpf_cnpj_d),
+ id_campanha INT NOT NULL REFERENCES campanha(id_campanha)
+);
+-- Registro das ordem_de_doacaos
+CREATE TABLE ordem_de_doacao (
+ id_ordem_doacao SERIAL PRIMARY KEY NOT NULL,
+ data_hora_criacao TIMESTAMP,
+ data_hora_retirada TIMESTAMP,
+ status VARCHAR(30),
+ rua VARCHAR(100),
+ numero VARCHAR(10),
+ bairro VARCHAR(50),
+ cidade VARCHAR(50),
+ estado VARCHAR(30),
+ cep VARCHAR(8),
+ cpf_cnpj_b VARCHAR(14) REFERENCES beneficiario(cpf_cnpj_b),
+ cpf_cnpj_i VARCHAR(14) NOT NULL REFERENCES instituicao(cpf_cnpj_i)
+);
+-- Itens de cada doação
+CREATE TABLE item_doacao (
+ id_item SERIAL NOT NULL,
+ id_doacao INT NOT NULL REFERENCES doacao(id_doacao),
+ id_ordem_doacao INT REFERENCES ordem_de_doacao(id_ordem_doacao),
+ nome VARCHAR(100),
+ descricao TEXT,
+ estado_conservacao VARCHAR(50),
+ peso NUMERIC(10,2),
+ volume NUMERIC(10,2),
+ tamanho VARCHAR(50),
+ cor VARCHAR(30),
+ PRIMARY KEY(id_item, id_doacao)
+);
+Script de criação de inserções de tuplas (SQL)
+INSERT INTO usuario (cpf_cnpj, nome, celular, email, estado, cidade, bairro, rua,
+numero, cep, senha) VALUES
+('11122233344', 'Maria Silva Santos', '88991234567', 'maria.silva@email.com',
+'CE', 'Quixadá', 'Centro', 'Rua A', '123', '63900000', 'senha123'),
+('22233344455', 'João Pereira Lima', '88992345678', 'joao.pereira@email.com',
+'CE', 'Quixadá', 'Alto São Francisco', 'Rua B', '456', '63900000', 'senha123'),
+('33344455566', 'Ana Costa Oliveira', '88993456789', 'ana.costa@email.com', 'CE',
+'Quixadá', 'Campo Velho', 'Rua C', '789', '63900000', 'senha123'),
+('44455566677', 'Pedro Alves Souza', '88994567890', 'pedro.alves@email.com',
+'CE', 'Quixadá', 'Planalto', 'Rua D', '321', '63900000', 'senha123'),
+('55566677788', 'Carla Mendes Lima', '88995678901', 'carla.mendes@email.com',
+'CE', 'Quixadá', 'São João', 'Rua E', '654', '63900000', 'senha123'),
+('66677788899', 'Roberto Santos Costa', '88996789012',
+'roberto.santos@email.com', 'CE', 'Quixadá', 'Centenário', 'Rua F', '987',
+'63900000', 'senha123'),
+('77788899900', 'Juliana Lima Alves', '88997890123', 'juliana.lima@email.com',
+'CE', 'Quixadá', 'Cedro', 'Rua G', '147', '63900000', 'senha123'),
+('88899900011', 'Ricardo Oliveira Silva', '88998901234',
+'ricardo.oliveira@email.com', 'CE', 'Quixadá', 'Jardim dos Monólitos', 'Rua H',
+'258', '63900000', 'senha123'),
+('99900011122', 'Amanda Souza Pereira', '88999012345', 'amanda.souza@email.com',
+'CE', 'Quixadá', 'Vila Feliz', 'Rua I', '369', '63900000', 'senha123'),
+('00011122233', 'Bruno Costa Mendes', '88990123456', 'bruno.costa@email.com',
+'CE', 'Quixadá', 'Novo Horizonte', 'Rua J', '741', '63900000', 'senha123'),
+('11122233345', 'José Santos Costa', '88991234568', 'jose.santos@email.com',
+'CE', 'Quixadá', 'Centro', 'Rua K', '111', '63900000', 'senha123'),
+('22233344456', 'Fernanda Lima Alves', '88992345679', 'fernanda.lima@email.com',
+'CE', 'Quixadá', 'Alto São Francisco', 'Rua L', '222', '63900000', 'senha123'),
+('33344455567', 'Carlos Oliveira Silva', '88993456780',
+'carlos.oliveira@email.com', 'CE', 'Quixadá', 'Campo Velho', 'Rua M', '333',
+'63900000', 'senha123'),
+('44455566678', 'Patrícia Souza Pereira', '88994567891',
+'patricia.souza@email.com', 'CE', 'Quixadá', 'Planalto', 'Rua N', '444',
+'63900000', 'senha123'),
+('55566677789', 'Lucas Costa Mendes', '88995678902', 'lucas.costa@email.com',
+'CE', 'Quixadá', 'São João', 'Rua O', '555', '63900000', 'senha123'),
+('66677788890', 'Mariana Santos Costa', '88996789013',
+'mariana.santos@email.com', 'CE', 'Quixadá', 'Centenário', 'Rua P', '666',
+'63900000', 'senha123'),
+('77788899901', 'Paulo Lima Alves', '88997890124', 'paulo.lima@email.com', 'CE',
+'Quixadá', 'Cedro', 'Rua Q', '777', '63900000', 'senha123'),
+('88899900012', 'Camila Oliveira Silva', '88998901235',
+'camila.oliveira@email.com', 'CE', 'Quixadá', 'Jardim dos Monólitos', 'Rua R',
+'888', '63900000', 'senha123'),
+('99900011123', 'Rafael Souza Pereira', '88999012346', 'rafael.souza@email.com',
+'CE', 'Quixadá', 'Vila Feliz', 'Rua S', '999', '63900000', 'senha123'),
+('00011122234', 'Tatiane Costa Mendes', '88990123457', 'tatiane.costa@email.com',
+'CE', 'Quixadá', 'Novo Horizonte', 'Rua T', '101', '63900000', 'senha123'),
+('11222333000144', 'Lar da Criança Feliz', '88991122334',
+'lar.crianca@email.com', 'CE', 'Quixadá', 'Centro', 'Av. Principal', '100',
+'63900000', 'senha123'),
+('22333444000155', 'Asilo São Vicente', '88992233445', 'asilo.sv@email.com',
+'CE', 'Quixadá', 'Alto São Francisco', 'Rua das Flores', '200', '63900000',
+'senha123'),
+('33444555000166', 'Casa de Apoio Esperança', '88993344556',
+'casa.esperanca@email.com', 'CE', 'Quixadá', 'Campo Velho', 'Travessa da Paz',
+'300', '63900000', 'senha123'),
+('44555666000177', 'Centro Comunitário União', '88994455667',
+'centro.uniao@email.com', 'CE', 'Quixadá', 'Planalto', 'Rua da União', '400',
+'63900000', 'senha123'),
+('55666777000188', 'Associação Amigos do Bem', '88995566778',
+'amigos.bem@email.com', 'CE', 'Quixadá', 'São João', 'Av. Solidária', '500',
+'63900000', 'senha123'),
+('66777888000199', 'Creche Esperança Infantil', '88996677889',
+'creche.esperanca@email.com', 'CE', 'Quixadá', 'Centenário', 'Rua da Amizade',
+'600', '63900000', 'senha123'),
+('77888999000100', 'Casa do Idoso Bem Estar', '88997788990',
+'casa.idoso@email.com', 'CE', 'Quixadá', 'Cedro', 'Travessa da Saúde', '700',
+'63900000', 'senha123'),
+('88999000000111', 'Instituto Educação para Todos', '88998899001',
+'instituto.educacao@email.com', 'CE', 'Quixadá', 'Jardim dos Monólitos', 'Rua do
+Saber', '800', '63900000', 'senha123'),
+('99000111000122', 'Fundação Alimentar', '88999900112',
+'fundacao.alimentar@email.com', 'CE', 'Quixadá', 'Vila Feliz', 'Av. da Nutrição',
+'900', '63900000', 'senha123'),
+('00111222000133', 'ONG Mãos Solidárias', '88990011223', 'ong.maos@email.com',
+'CE', 'Quixadá', 'Novo Horizonte', 'Rua da Solidariedade', '1000', '63900000',
+'senha123');
+INSERT INTO doador (cpf_cnpj_d, data_nascimento) VALUES
+('11122233344','1985-03-15'),('22233344455','1990-07-22'),('33344455566','1978-11
+-30'),('44455566677','1982-05-10'),
+('55566677788','1995-09-18'),('66677788899','1988-12-05'),('77788899900','1975-04
+-20'),('88899900011','1992-08-15'),
+('99900011122','1980-01-30'),('00011122233','1998-06-25');
+INSERT INTO beneficiario (cpf_cnpj_b, data_nascimento) VALUES
+('11122233345','1960-01-25'),('22233344456','1955-08-12'),('33344455567','1972-12
+-05'),('44455566678','1988-04-20'),
+('55566677789','1993-06-08'),('66677788890','1965-03-18'),('77788899901','1958-11
+-22'),('88899900012','1970-07-14'),
+('99900011123','1985-09-30'),('00011122234','1990-02-28');
+INSERT INTO instituicao (cpf_cnpj_i) VALUES
+('11222333000144'),('22333444000155'),('33444555000166'),('44555666000177'),('556
+66777000188'),
+('66777888000199'),('77888999000100'),('88999000000111'),('99000111000122'),('001
+11222000133');
+INSERT INTO campanha (nome, data_inicio, data_fim, status, cpf_cnpj_i) VALUES
+('Campanha do Agasalho 2024','2024-05-01', '2024-08-31', 'Ativa',
+'11222333000144'),
+('Natal Solidário 2024','2024-11-01','2024-12-20','Planejada','22333444000155'),
+('Páscoa com Amor','2024-03-01','2024-04-10','Concluída','33444555000166'),
+('Volta às Aulas
+Solidária','2024-01-15','2024-02-28','Concluída','44555666000177'),
+('Doação de Livros','2024-04-01','2024-12-31','Ativa','55666777000188'),
+('Alimentos não Perecíveis','2024-06-01','2024-12-31','Ativa','66777888000199'),
+('Brinquedos para
+Crianças','2024-09-01','2024-12-15','Planejada','77888999000100'),
+('Material de Higiene','2024-03-15','2024-11-30','Ativa','88999000000111'),
+('Móveis Usados','2024-02-01','2024-12-31','Ativa','99000111000122'),
+('Eletrodomésticos','2024-01-01','2024-12-31','Ativa','00111222000133');
+INSERT INTO doacao (data_doacao, cpf_cnpj_d, id_campanha) VALUES
+('2024-05-10 14:30:00', '11122233344', 1),
+('2024-05-12 10:15:00', '22233344455', 1),
+('2024-05-15 16:45:00', '33344455566', 3),
+('2024-05-18 09:20:00', '44455566677', 5),
+('2024-05-20 11:30:00', '55566677788', 6),
+('2024-05-22 13:15:00', '66677788899', 8),
+('2024-05-25 15:40:00', '77788899900', 9),
+('2024-05-28 08:50:00', '88899900011', 10),
+('2024-06-01 14:20:00', '99900011122', 4),
+('2024-06-05 10:10:00', '00011122233', 2);
+INSERT INTO item_doacao (id_doacao, nome, descricao, estado_conservacao, peso,
+volume, tamanho, cor) VALUES
+(1,'Casaco de Inverno','Casaco quente para adultos','Bom',0.8,0.02,'M','Azul'),
+(1,'Calça Jeans','Calça jeans masculina','Usado',0.6,0.015,'38','Azul'),
+(1,'Blusa de Frio','Blusa de lã feminina','Novo',0.5,0.01,'P','Vermelho'),
+(1,'Tênis Esportivo','Tênis para caminhada','Bom',0.7,0.008,'40','Branco'),
+(1,'Meias de Lã','Pacote com 3 pares de meias','Novo',0.2,0.001,'Único','Cinza'),
+(1,'Gorro','Gorro de lã para inverno','Novo',0.1,0.0005,'Adulto','Preto'),
+(1,'Cachecol','Cachecol de lã longo','Bom',0.3,0.002,'Padrão','Verde'),
+(1,'Luvas','Par de luvas de lã','Novo',0.15,0.0008,'M','Marrom'),
+(1,'Jaqueta Corta Vento','Jaqueta impermeável','Usado',0.9,0.025,'G','Azul
+Marinho'),
+(1,'Calça Moletom','Calça de moletom confortável','Bom',0.6,0.018,'M','Cinza'),
+(2,'Cobertor','Cobertor de lã queen size','Bom',2.5,0.05,'Queen','Azul'),
+(2,'Edredom','Edredom antialérgico','Novo',3.0,0.06,'King','Branco'),
+(2,'Fronha','Conjunto com 4 fronhas','Novo',0.4,0.003,'Standard','Branco'),
+(2,'Toalha de Banho','Toalha de banho grande','Bom',0.8,0.004,'Grande','Azul
+Claro'),
+(2,'Toalha de Rosto','Toalha de rosto média','Novo',0.3,0.002,'Média','Branca'),
+(2,'Roupão','Roupão de banho','Usado',1.2,0.03,'G','Azul Marinho'),
+(2,'Tapete','Tapete de banheiro','Bom',1.0,0.02,'60x90cm','Cinza'),
+(2,'Cortina','Cortina blackout','Novo',2.8,0.04,'3x2m','Bege'),
+(2,'Almofada','Almofada decorativa','Bom',0.5,0.01,'45x45cm','Verde'),
+(2,'Colcha','Colcha de cama casal','Usado',1.8,0.035,'Casal','Rosa'),
+(3,'Ovo de Páscoa','Ovo de chocolate ao leite
+500g','Novo',0.6,0.005,'Médio','Colorido'),
+(3,'Cesta Básica','Cesta com alimentos
+essenciais','Novo',8.0,0.08,'Grande','Variada'),
+(3,'Biscoito','Pacote de biscoito cream
+cracker','Novo',0.4,0.003,'400g','Dourado'),
+(3,'Achocolatado','Pote de achocolatado 400g','Novo',0.5,0.004,'400g','Marrom'),
+(3,'Leite em Pó','Pacote de leite em pó 1kg','Novo',1.1,0.006,'1kg','Branco'),
+(3,'Café','Pacote de café 500g','Novo',0.6,0.004,'500g','Marrom'),
+(3,'Açúcar','Pacote de açúcar 1kg','Novo',1.1,0.005,'1kg','Branco'),
+(3,'Farinha','Pacote de farinha 1kg','Novo',1.1,0.005,'1kg','Branca'),
+(3,'Óleo','Litro de óleo de soja','Novo',0.95,0.001,'1L','Amarelo'),
+(3,'Feijão','Pacote de feijão 1kg','Novo',1.1,0.005,'1kg','Marrom'),
+(4,'Livro Redes De Computadores e a internet','Livro para ser
+inteligente','Bom',0.7,0.005,'A4','Verde'),
+(4,'Livro Cálculo Diferencial','Cálculo diferencial e integral - volume
+1','Usado',1.2,0.008,'Grande','Azul'),
+(4,'Livro Álgebra Linear','Álgebra linear e suas
+aplicações','Bom',0.9,0.006,'Médio','Amarelo'),
+(4,'Livro Geometria Analítica','Geometria analítica e
+vetorial','Usado',0.8,0.005,'A4','Vermelho'),
+(4,'Livro Matemática Financeira','Matemática financeira
+aplicada','Novo',0.6,0.004,'A5','Azul'),
+(4,'Livro Estatística Básica','Noções de estatística e
+probabilidade','Bom',0.7,0.005,'A4','Verde'),
+(4,'Livro Trigonometria','Trigonometria e suas
+aplicações','Novo',0.5,0.004,'Médio','Laranja'),
+(4,'Livro Matemática Discreta','Fundamentos de matemática
+discreta','Usado',0.8,0.006,'A4','Marrom'),
+(4,'Livro Cálculo Avançado','Cálculo de várias
+variáveis','Bom',1.1,0.007,'Grande','Cinza'),
+(4,'Livro História da Matemática','Evolução histórica da
+matemática','Novo',0.7,0.005,'A4','Bege'),
+(5,'Arroz','Pacote de arroz 5kg','Novo',5.0,0.008,'Pequeno','Branco'),
+(5,'Macarrão','Pacote de macarrão 1kg','Novo',1.1,0.004,'1kg','Amarelo'),
+(5,'Molho de Tomate','Lata de molho de
+tomate','Novo',0.5,0.002,'340g','Vermelho'),
+(5,'Milho','Lata de milho verde','Novo',0.4,0.002,'300g','Amarelo'),
+(5,'Ervilha','Lata de ervilha','Novo',0.4,0.002,'300g','Verde'),
+(5,'Sardinha','Lata de sardinha','Novo',0.3,0.001,'125g','Laranja'),
+(5,'Leite Condensado','Lata de leite condensado','Novo',0.4,0.002,'395g','Azul'),
+(5,'Creme de Leite','Lata de creme de leite','Novo',0.3,0.001,'200g','Vermelho'),
+(5,'Extrato de Tomate','Lata de extrato de
+tomate','Novo',0.2,0.001,'140g','Vermelho'),
+(5,'Feijão Enlatado','Lata de feijão pronto','Novo',0.5,0.002,'400g','Marrom');
+INSERT INTO ordem_de_doacao (data_hora_criacao, data_hora_retirada, status,
+estado, cidade, bairro, rua, numero, cep, cpf_cnpj_b, cpf_cnpj_i) VALUES
+('2024-05-11 09:00:00','2024-05-12
+14:00:00','Entregue','Ceará','Quixadá','Centro','Rua
+A','123','63900000','11122233345','11222333000144'),
+('2024-05-13 10:30:00','2024-05-14 11:15:00','Entregue','Ceará','Quixadá','Alto
+São Francisco','Rua B','456','63900000','22233344456','22333444000155'),
+('2024-05-16 08:45:00',NULL,'Pendente','Ceará','Quixadá','Campo Velho','Rua
+C','789','63900000','33344455567','33444555000166'),
+('2024-05-19 14:20:00','2024-05-20
+10:30:00','Entregue','Ceará','Quixadá','Planalto','Rua
+D','321','63900000','44455566678','44555666000177'),
+('2024-05-21 11:10:00',NULL,'Processando','Ceará','Quixadá','São João','Rua
+E','654','63900000','55566677789','55666777000188'),
+('2024-05-23 16:30:00','2024-05-24
+09:45:00','Entregue','Ceará','Quixadá','Centenário','Rua
+F','987','63900000','66677788890','66777888000199'),
+('2024-05-26 13:15:00',NULL,'Cancelada','Ceará','Quixadá','Cedro','Rua
+G','147','63900000','77788899901','77888999000100'),
+('2024-05-29 10:00:00','2024-05-30 15:20:00','Entregue','Ceará','Quixadá','Jardim
+dos Monólitos','Rua H','258','63900000','88899900012','88999000000111');
