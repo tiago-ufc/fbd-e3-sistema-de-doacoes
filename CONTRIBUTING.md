@@ -1,4 +1,4 @@
-🤝 Contributing to Charity Management System
+🤝 Contributing to Donation System
     
     First off, thank you for taking the time to contribute! This project thrives on collective effort. To keep the codebase clean and stable, we follow a specific workflow.
 
