@@ -17,17 +17,35 @@ def grafico_total_usuarios(cnx):
     """Gráfico mostrando total de usuários por tipo"""
     try:
         df = _safe_df_query(
-            "SELECT 'Total de Usuários' AS categoria, COUNT(*) AS total FROM usuario",
+            """SELECT 
+                CASE 
+                    WHEN d.cpf_cnpj_d IS NOT NULL THEN 'Doador'
+                    WHEN b.cpf_cnpj_b IS NOT NULL THEN 'Beneficiário'
+                    WHEN i.cpf_cnpj_i IS NOT NULL THEN 'Instituição'
+                END AS tipo,
+                COUNT(*) AS total
+            FROM usuario u
+            LEFT JOIN doador d ON u.cpf_cnpj = d.cpf_cnpj_d
+            LEFT JOIN beneficiario b ON u.cpf_cnpj = b.cpf_cnpj_b
+            LEFT JOIN instituicao i ON u.cpf_cnpj = i.cpf_cnpj_i
+            GROUP BY tipo
+            ORDER BY tipo""",
             cnx,
         )
         if df.empty:
             return pn.pane.Alert('Nenhum dado encontrado para Total de Usuários.', alert_type='warning')
-        fig, ax = plt.subplots(figsize=(8, 5))
-        ax.bar(df["categoria"], df["total"], color='#FF6B6B', width=0.5)
-        ax.set_ylabel("Quantidade")
-        ax.set_title("Total de Usuários Cadastrados", fontsize=14, fontweight='bold')
+        fig, ax = plt.subplots(figsize=(10, 5))
+        colors = ['#FF6B6B', '#4ECDC4', '#45B7D1']
+        ax.bar(df["tipo"], df["total"], color=colors[:len(df)], edgecolor='black', width=0.6)
+        ax.set_ylabel("Quantidade", fontsize=12)
+        ax.set_title("Total de Usuários Cadastrados por Tipo", fontsize=14, fontweight='bold')
+        
+        # Define ticks inteiros no eixo Y
+        max_total = df["total"].max()
+        ax.set_yticks(range(0, int(max_total) + 2))
+        
         for i, v in enumerate(df["total"]):
-            ax.text(i, v + 1, str(int(v)), ha='center', va='bottom', fontsize=14, fontweight='bold')
+            ax.text(i, v + 0.2, str(int(v)), ha='center', va='bottom', fontsize=14, fontweight='bold')
         plt.tight_layout()
         return pn.pane.Matplotlib(fig, tight=True, sizing_mode='stretch_width')
     except Exception as e:
@@ -260,6 +278,17 @@ def create_graficos_view(cnx, create_btn_voltar=None):
     """
     titulo = pn.pane.Markdown("### 📊 Análise de Dados do Sistema de Doações")
 
+    components = [titulo]
+    
+    # Adiciona botão de voltar no topo se fornecido
+    if create_btn_voltar is not None:
+        try:
+            components.append(create_btn_voltar())
+        except Exception:
+            # se create_btn_voltar não for callable, ignore
+            if hasattr(create_btn_voltar, 'name'):
+                components.append(create_btn_voltar)
+
     # Abas por view
     aba_usuarios = pn.Column(
         pn.pane.Markdown("**Usuários**"),
@@ -306,14 +335,7 @@ def create_graficos_view(cnx, create_btn_voltar=None):
         sizing_mode='stretch_width',
     )
 
-    components = [titulo, tabs]
-    if create_btn_voltar is not None:
-        try:
-            components.append(create_btn_voltar())
-        except Exception:
-            # se create_btn_voltar não for callable, ignore
-            if hasattr(create_btn_voltar, 'name'):
-                components.append(create_btn_voltar)
+    components.append(tabs)
 
     layout = pn.Column(*components, sizing_mode='stretch_width', margin=(20, 20, 20, 20))
     return layout
