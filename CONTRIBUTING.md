@@ -1,18 +1,18 @@
 🤝 Contributing to Donation System
-    
-    First off, thank you for taking the time to contribute! This project thrives on collective effort. To keep the codebase clean and stable, we follow a specific workflow.
+  First off, thank you for taking the time to contribute! This project thrives on collective effort. 
+  To keep the codebase clean and stable, we follow a specific workflow.
 
 🌿 Our Workflow: Fork & Incremental Merges
-
-    We use a Forking Workflow. This means you don't push directly to the main repository. Instead, you push to your own copy and request a review.
+  We use a Forking Workflow. This means you don't push directly to the main repository. 
+  Instead, you push to your own copy and request a review.
 
 Set Up Your Fork
-  1.Fork the main repository to your own GitHub account.
-  2.Clone your fork locally:
+  Fork the main repository to your own GitHub account.
+  Clone your fork locally:
 
     git clone https://github.com/tiago-ufc/fbd-e3-sistema-de-doacoes.git
 
-  3.Connect to the original:
+  Connect to the original:
   This allows you to pull the latest changes from the group.
   
     git remote add upstream https://github.com/tiago-ufc/fbd-e3-sistema-de-doacoes.git
@@ -24,7 +24,6 @@ Working on Features:
 
 Keep Your Branch Updated
   Before submitting your work, make sure it’s compatible with the latest group code:
-
   Fetch the latest changes: 
   
     git fetch upstream
@@ -36,7 +35,6 @@ Keep Your Branch Updated
   Resolve any conflicts locally.
 
 Submitting a Pull Request
-
   Push your branch to your fork: 
   
     git push origin feature/name-of-your-task
