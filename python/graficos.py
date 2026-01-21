@@ -45,7 +45,7 @@ def grafico_status_ordens(cnx):
             return pn.pane.Alert('Nenhum dado encontrado para Status das Ordens.', alert_type='warning')
         fig, ax = plt.subplots(figsize=(8, 6))
         colors = ['#2ca02c', '#ff7f0e', '#d62728', '#9467bd']
-        ax.pie(df["total"], labels=df["status"], autopct='%1.1f%%', colors=colors[: len(df)], startangle=90)
+        ax.pie(df["total"], labels=df["status"], autopct='%d', colors=colors[: len(df)], startangle=90)
         ax.set_title("Status das Ordens de Doação", fontsize=14, fontweight='bold')
         return pn.pane.Matplotlib(fig, tight=True, sizing_mode='stretch_width')
     except Exception as e:
@@ -65,6 +65,8 @@ def grafico_tipos_itens(cnx):
         ax.barh(df["nome"], df["total"], color='#17becf', edgecolor='black')
         ax.set_title("Top 10 Itens Mais Doados", fontsize=14, fontweight='bold')
         ax.set_xlabel("Quantidade", fontsize=12)
+        for i, v in enumerate(df["total"]):
+            ax.text(v + 0.1, i, str(int(v)), va='center')
         plt.tight_layout()
         return pn.pane.Matplotlib(fig, tight=True, sizing_mode='stretch_width')
     except Exception as e:
@@ -82,7 +84,7 @@ def grafico_campanhas_status(cnx):
             return pn.pane.Alert('Nenhum dado encontrado para Status das Campanhas.', alert_type='warning')
         fig, ax = plt.subplots(figsize=(8, 6))
         colors = ['#2ca02c', '#ff7f0e', '#d62728']
-        ax.pie(df["total"], labels=df["status"], autopct='%1.1f%%', colors=colors[: len(df)], startangle=90)
+        ax.pie(df["total"], labels=df["status"], autopct='%d', colors=colors[: len(df)], startangle=90)
         ax.set_title("Status das Campanhas", fontsize=14, fontweight='bold')
         return pn.pane.Matplotlib(fig, tight=True, sizing_mode='stretch_width')
     except Exception as e:
@@ -121,7 +123,7 @@ def grafico_conservacao_itens(cnx):
             return pn.pane.Alert('Nenhum dado encontrado para Estado de Conservação.', alert_type='warning')
         fig, ax = plt.subplots(figsize=(8, 6))
         colors = ['#2ca02c', '#ff7f0e', '#1f77b4']
-        ax.pie(df["total"], labels=df["estado_conservacao"], autopct='%1.1f%%', colors=colors[: len(df)], startangle=90)
+        ax.pie(df["total"], labels=df["estado_conservacao"], autopct='%d', colors=colors[: len(df)], startangle=90)
         ax.set_title("Estado de Conservação dos Itens", fontsize=14, fontweight='bold')
         return pn.pane.Matplotlib(fig, tight=True, sizing_mode='stretch_width')
     except Exception as e:
@@ -141,6 +143,8 @@ def grafico_doacoes_por_doador(cnx):
         ax.barh(df["nome"], df["total"], color='#1f77b4', edgecolor='black')
         ax.set_title("Top 10 Doadores", fontsize=14, fontweight='bold')
         ax.set_xlabel("Total de Doações", fontsize=12)
+        for i, v in enumerate(df["total"]):
+            ax.text(v + 0.1, i, str(int(v)), va='center')
         plt.tight_layout()
         return pn.pane.Matplotlib(fig, tight=True, sizing_mode='stretch_width')
     except Exception as e:
@@ -169,7 +173,7 @@ def grafico_distribuicao_por_tipo(cnx):
             return pn.pane.Alert('Nenhum dado encontrado para Distribuição por Tipo.', alert_type='warning')
         fig, ax = plt.subplots(figsize=(8, 6))
         colors = ['#FF6B6B', '#4ECDC4', '#45B7D1']
-        ax.pie(df["quantidade"], labels=df["tipo"], autopct='%1.1f%%', colors=colors[: len(df)], startangle=90)
+        ax.pie(df["quantidade"], labels=df["tipo"], autopct='%d', colors=colors[: len(df)], startangle=90)
         ax.set_title("Distribuição de Usuários por Tipo", fontsize=14, fontweight='bold')
         return pn.pane.Matplotlib(fig, tight=True, sizing_mode='stretch_width')
     except Exception as e:
@@ -206,23 +210,38 @@ def grafico_instituicoes(cnx):
 
 
 def grafico_total_usuarios(cnx):
-    """Gráfico mostrando total de usuários cadastrados"""
+    """Gráfico de barras mostrando total de usuários por tipo"""
     try:
         df = _safe_df_query(
             """SELECT 
-                'Total de Usuários' AS categoria,
+                CASE 
+                    WHEN d.cpf_cnpj_d IS NOT NULL THEN 'Doador'
+                    WHEN b.cpf_cnpj_b IS NOT NULL THEN 'Beneficiário'
+                    WHEN i.cpf_cnpj_i IS NOT NULL THEN 'Instituição'
+                    ELSE 'Sem Tipo'
+                END AS tipo,
                 COUNT(*) AS total
-            FROM usuario""",
+            FROM usuario u
+            LEFT JOIN doador d ON u.cpf_cnpj = d.cpf_cnpj_d
+            LEFT JOIN beneficiario b ON u.cpf_cnpj = b.cpf_cnpj_b
+            LEFT JOIN instituicao i ON u.cpf_cnpj = i.cpf_cnpj_i
+            GROUP BY tipo
+            ORDER BY total DESC""",
             cnx,
         )
         if df.empty:
             return pn.pane.Alert('Nenhum usuário encontrado.', alert_type='warning')
-        fig, ax = plt.subplots(figsize=(8, 5))
-        ax.bar(df["categoria"], df["total"], color='#FF6B6B', width=0.5, edgecolor='black')
+        fig, ax = plt.subplots(figsize=(10, 6))
+        colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#95E1D3']
+        ax.bar(df["tipo"], df["total"], color=colors[:len(df)], edgecolor='black')
         ax.set_ylabel("Quantidade", fontsize=12)
-        ax.set_title("Total de Usuários Cadastrados", fontsize=14, fontweight='bold')
+        ax.set_xlabel("Tipo de Usuário", fontsize=12)
+        ax.set_title("Total de Usuários por Tipo", fontsize=14, fontweight='bold')
+        # Garantir ticks inteiros no eixo Y
+        max_total = df["total"].max()
+        ax.set_yticks(range(0, int(max_total) + 2))
         for i, v in enumerate(df["total"]):
-            ax.text(i, v + 1, str(v), ha='center', va='bottom', fontsize=14, fontweight='bold')
+            ax.text(i, v + 0.2, str(int(v)), ha='center', va='bottom', fontsize=12, fontweight='bold')
         plt.tight_layout()
         return pn.pane.Matplotlib(fig, tight=True, sizing_mode='stretch_width')
     except Exception as e:
