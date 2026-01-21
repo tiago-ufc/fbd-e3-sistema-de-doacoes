@@ -1,4 +1,4 @@
-🎁 Charity & Campaign Management System
+🎁 Donation System
 
 A Python-based application designed to bridge the gap between charitable institutions and community needs. This system allows for full management of campaigns, event logistics, and inventory tracking for donated goods.
 
